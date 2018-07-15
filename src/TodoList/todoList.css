@@ -1,0 +1,10 @@
+
+.todoItem{
+    transition: all .3s;
+    color: green;
+    background: rgba(0,0,0,0.3)
+}
+.todoItem.bg{
+    color:#fff;
+    background: rgba(0,0,0,1)
+}
