@@ -2,15 +2,11 @@ import React, { Component, Fragment } from "react";
 import TodoListContent from "./TodoListContent";
 import store from '../store/index'
 
-import {
-  INPUT_CHANGE_ACTION,
-  ADD_ITEM_ACTION
-} from "../store/actionType.js";
+import {getInputChangeAction,getAddItemAction} from '../store/action.js'
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
-    // state 数据
     this.state = {
       ...store.getState()
     };
@@ -31,37 +27,27 @@ class TodoList extends Component {
           onKeyDown={this.handleAddItem}
         />
         <button onClick={this.handleAddItemClick}>添加</button>
-        <TodoListContent
-          contentList={this.state.todoListContent}
-        />
+        <TodoListContent/>
       </Fragment>
     );
   }
 
   handleInputChange(e) {
     const value = e.target.value;
-    const action = {
-      type:INPUT_CHANGE_ACTION,
-      value
-    }
-    store.dispatch(action)
+    store.dispatch(getInputChangeAction(value))
   }
   handleAddItem(e) {
     if (e.keyCode !== 13) return;
-    const action = {
-      type : ADD_ITEM_ACTION
-    }
+    const action = getAddItemAction()
     store.dispatch(action)
   }
-  handleAddItemClick(e) {
-    const action = {
-      type : ADD_ITEM_ACTION
-    }
+  handleAddItemClick() {
+    const action = getAddItemAction()
     store.dispatch(action)
   }
 
   handleStoreChange(){
-    this.setState((prevState)=>({
+    this.setState(()=>({
       ...store.getState()
     }))
   }

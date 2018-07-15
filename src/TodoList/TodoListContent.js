@@ -1,32 +1,31 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types'
 import store from '../store/index'
 
 import {
-  DELETE_TODO_ITEM_ACTION
-} from "../store/actionType";
+  getDeleteTodoItemAction
+} from "../store/action";
 
 import './todoList.css'
+
 class TodoListContent extends Component {
   constructor(props){
     super(props)
     this.state = {
-      show:false
+      ...store.getState()
     }
     this.handleStoreChange = this.handleStoreChange.bind(this)
 
     store.subscribe(this.handleStoreChange)
   }
   render() {
-    const {contentList} = this.props
     return (
       <ul>
-        {contentList.map((item, index) => {
+        {this.state.todoListContent.map((item, index) => {
           return (
             <li 
               className={`todoItem`}
               key={Math.random()}
-              onClick       ={this.handleDeleteTodoItem.bind(this)}
+              onClick       ={this.handleDeleteTodoItem.bind(this,index)}
               onMouseEnter  ={this.handleAddBg.bind(this)}
               onMouseLeave  ={this.handleRemoveBg.bind(this)}
             >
@@ -38,15 +37,10 @@ class TodoListContent extends Component {
     );
   }
   
-  handleDeleteTodoItem(index) {
-    const action = {
-      type:DELETE_TODO_ITEM_ACTION,
-      value:index
-    }
+  handleDeleteTodoItem(index){
+    const action = getDeleteTodoItemAction(index)
     store.dispatch(action)
   }
-
-
 
   handleStoreChange(){
     this.setState(()=>({
@@ -60,13 +54,5 @@ class TodoListContent extends Component {
   handleRemoveBg(ev){
     ev.target.classList.remove('bg')
   }
-
-
 }
-
-TodoListContent.propTypes = {
-  contentList : PropTypes.array,
-  deleteTodoItem : PropTypes.func
-}
-
 export default TodoListContent;

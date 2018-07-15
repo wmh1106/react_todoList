@@ -26,6 +26,7 @@ export default (state = defaultState, action) => {
 
   if (action.type === DELETE_TODO_ITEM_ACTION) {
     const newState = JSON.parse(JSON.stringify(state));
+    console.log(action.value)
     newState.todoListContent.splice(action.value, 1);
     return newState;
   }
