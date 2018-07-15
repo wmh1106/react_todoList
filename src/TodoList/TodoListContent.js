@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types'
+import store from '../store/index'
+
 import './todoList.css'
 class TodoListContent extends Component {
   constructor(props){
@@ -7,6 +9,9 @@ class TodoListContent extends Component {
     this.state = {
       show:false
     }
+    this.handleStoreChange = this.handleStoreChange.bind(this)
+
+    store.subscribe(this.handleStoreChange)
   }
   render() {
     const {contentList} = this.props
@@ -28,10 +33,21 @@ class TodoListContent extends Component {
       </ul>
     );
   }
+  
+  handleDeleteTodoItem(index) {
+    const action = {
+      type:'deleteTodoItemAction',
+      value:index
+    }
+    store.dispatch(action)
+  }
 
-  handleDeleteTodoItem(index){
-    const {deleteTodoItem} = this.props
-    deleteTodoItem(index)
+
+
+  handleStoreChange(){
+    this.setState(()=>({
+      ...store.getState()
+    }))
   }
 
   handleAddBg(ev){
@@ -40,6 +56,8 @@ class TodoListContent extends Component {
   handleRemoveBg(ev){
     ev.target.classList.remove('bg')
   }
+
+
 }
 
 TodoListContent.propTypes = {

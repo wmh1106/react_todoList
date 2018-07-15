@@ -1,18 +1,20 @@
 import React, { Component, Fragment } from "react";
 import TodoListContent from "./TodoListContent";
+import store from '../store/index'
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
     // state 数据
     this.state = {
-      inputValue: "",
-      todoListContent: ["组件"]
+      ...store.getState()
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleAddItem = this.handleAddItem.bind(this);
-    this.handleDeleteTodoItem = this.handleDeleteTodoItem.bind(this);
+    this.handleStoreChange = this.handleStoreChange.bind(this)
+    // store 的监听
+    store.subscribe(this.handleStoreChange)
   }
   render() {
     return (
@@ -20,43 +22,44 @@ class TodoList extends Component {
         <input
           type="text"
           value={this.state.inputValue}
-          onInput={this.handleInputChange}
+          onChange={this.handleInputChange}
           onKeyDown={this.handleAddItem}
         />
-        <button onClick={this.handleAddItem}>添加</button>
+        <button onClick={this.handleAddItemClick}>添加</button>
         <TodoListContent
           contentList={this.state.todoListContent}
-          deleteTodoItem={this.handleDeleteTodoItem}
         />
       </Fragment>
     );
   }
-  handleInputChange(e) {
-    const val = e.target.value;
-    this.setState(() => {
-      return {
-        inputValue: val
-      };
-    });
-  }
 
+  handleInputChange(e) {
+    const value = e.target.value;
+    const action = {
+      type:'inputChangeAction',
+      value
+    }
+    store.dispatch(action)
+  }
   handleAddItem(e) {
     if (e.keyCode !== 13) return;
-
-    this.setState(prevState => ({
-      todoListContent: [prevState.inputValue, ...prevState.todoListContent],
-      inputValue: ""
-    }));
+    const action = {
+      type : 'addItemAction'
+    }
+    store.dispatch(action)
+  }
+  handleAddItemClick(e) {
+    const value =  e.target.value
+    const action = {
+      type : 'addItemAction'
+    }
+    store.dispatch(action)
   }
 
-  handleDeleteTodoItem(index) {
-    this.setState(prevState => {
-      let todoListContent = [...prevState.todoListContent];
-      todoListContent.splice(index, 1);
-      return {
-        todoListContent: [...todoListContent]
-      };
-    });
+  handleStoreChange(){
+    this.setState((prevState)=>({
+      ...store.getState()
+    }))
   }
 }
 
