@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types'
 import store from '../store/index'
 
+import {
+  DELETE_TODO_ITEM_ACTION
+} from "../store/actionType";
+
 import './todoList.css'
 class TodoListContent extends Component {
   constructor(props){
@@ -36,7 +40,7 @@ class TodoListContent extends Component {
   
   handleDeleteTodoItem(index) {
     const action = {
-      type:'deleteTodoItemAction',
+      type:DELETE_TODO_ITEM_ACTION,
       value:index
     }
     store.dispatch(action)

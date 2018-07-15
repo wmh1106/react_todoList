@@ -16,3 +16,6 @@
 │   └── index.js
 └── yarn.lock
 ```
+
+错误：`Uncaught TypeError: Cannot read property 'nodeName' of null at HTMLDocument.onMouseClick`chrom 插件引起的。
+用隐身模式浏览没问题

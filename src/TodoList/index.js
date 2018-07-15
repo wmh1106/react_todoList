@@ -2,6 +2,11 @@ import React, { Component, Fragment } from "react";
 import TodoListContent from "./TodoListContent";
 import store from '../store/index'
 
+import {
+  INPUT_CHANGE_ACTION,
+  ADD_ITEM_ACTION
+} from "../store/actionType.js";
+
 class TodoList extends Component {
   constructor(props) {
     super(props);
@@ -36,7 +41,7 @@ class TodoList extends Component {
   handleInputChange(e) {
     const value = e.target.value;
     const action = {
-      type:'inputChangeAction',
+      type:INPUT_CHANGE_ACTION,
       value
     }
     store.dispatch(action)
@@ -44,14 +49,13 @@ class TodoList extends Component {
   handleAddItem(e) {
     if (e.keyCode !== 13) return;
     const action = {
-      type : 'addItemAction'
+      type : ADD_ITEM_ACTION
     }
     store.dispatch(action)
   }
   handleAddItemClick(e) {
-    const value =  e.target.value
     const action = {
-      type : 'addItemAction'
+      type : ADD_ITEM_ACTION
     }
     store.dispatch(action)
   }
